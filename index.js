@@ -7,6 +7,8 @@ let persons = data.persons;
 const app = express();
 const port = 3001;
 
+app.use(express.json());
+
 app.get("/", (req, res) => {
   res.send(homepage);
 });
@@ -34,6 +36,20 @@ app.delete("/api/persons/:id", (req, res) => {
   persons = persons.filter((person) => person.id !== id);
 
   res.status(204).end();
+});
+
+app.post("/api/persons", (req, res) => {
+  const body = req.body;
+
+  const id = String(Math.round(Math.random() * 1000));
+  const person = {
+    id: id,
+    name: body.name,
+    number: body.number,
+  };
+  persons = [...persons, person];
+
+  res.json(person);
 });
 
 app.get("/info", (req, res) => {
