@@ -1,4 +1,5 @@
 import express from "express";
+import morgan from "morgan";
 import { homepage, apiList, info } from "./pages/index.js";
 import data from "./data.js";
 
@@ -8,6 +9,7 @@ const app = express();
 const port = 3001;
 
 app.use(express.json());
+app.use(morgan("tiny"));
 
 app.get("/", (req, res) => {
   res.send(homepage);
