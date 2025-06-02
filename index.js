@@ -27,6 +27,7 @@ app.use(
     ].join(" ");
   })
 );
+app.use(express.static('dist'));
 
 app.get("/", (req, res) => {
   res.send(homepage);
