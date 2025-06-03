@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from "express";
 import morgan from "morgan";
 import { homepage, apiList, info } from "./pages/index.js";
@@ -6,8 +7,8 @@ import { Contact } from './models/contact.js'
 
 let persons = data.persons;
 
+const PORT = process.env.PORT;
 const app = express();
-const port = 3001;
 
 morgan.token("content", function (req, res) {
   return JSON.stringify(req.body);
