@@ -50,7 +50,7 @@ app.get("/api/persons/:id", (req, res) => {
     }
   }).catch(error => {
     console.error(error);
-    res.status(500).end();
+    res.status(400).send({ error: 'malformatted id'});
   })
 });
 
