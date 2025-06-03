@@ -1,11 +1,9 @@
 import 'dotenv/config';
 import express from "express";
 import morgan from "morgan";
-import { homepage, apiList, info } from "./pages/index.js";
-import data from "./data.js";
+import { apiList, info } from "./pages/index.js";
 import { Contact } from './models/contact.js'
-
-let persons = data.persons;
+import mongoose from 'mongoose';
 
 const port = process.env.PORT;
 const app = express();
