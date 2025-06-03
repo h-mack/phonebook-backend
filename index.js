@@ -43,12 +43,13 @@ app.get("/api/persons", (req, res) => {
 
 app.get("/api/persons/:id", (req, res) => {
   const id = req.params.id;
-  const person = persons.find((p) => p.id === id);
-  if (person) {
-    res.send(person);
-  } else {
+
+  Contact.findById(id).then(contact => {
+    res.json(contact)
+  }).catch(error => {
+    console.error(error);
     res.status(404).end();
-  }
+  })
 });
 
 app.delete("/api/persons/:id", (req, res) => {
