@@ -52,9 +52,15 @@ app.get("/api/persons/:id", (req, res) => {
   })
 });
 
-app.delete("/api/persons/:id", (req, res) => {
+app.delete("/api/persons/:id", async (req, res) => {
   const id = req.params.id;
-  persons = persons.filter((person) => person.id !== id);
+  const objectId = new mongoose.Types.ObjectId(id);
+
+  const result = await Contact.deleteOne({ _id: objectId });
+
+  if (result.deletedCount === 0) {
+    return res.status(404).json({ error: "Contact not found"});
+  }
 
   res.status(204).end();
 });
