@@ -31,10 +31,6 @@ app.use(
 );
 app.use(express.static('dist'));
 
-app.get("/", (req, res) => {
-  res.send(homepage);
-});
-
 app.get("/api", (req, res) => {
   res.send(apiList);
 });
