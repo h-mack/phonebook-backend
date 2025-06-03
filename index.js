@@ -2,6 +2,24 @@ import express from "express";
 import morgan from "morgan";
 import { homepage, apiList, info } from "./pages/index.js";
 import data from "./data.js";
+import mongoose from "mongoose";
+
+const password = process.argv[2];
+const url = `mongodb+srv://fullstack:${password}@cluster0.bkygwix.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=Cluster0`;
+mongoose.set('strictQuery', false);
+mongoose.connect(url);
+const contactSchema = new mongoose.Schema({
+  name: String,
+  number: String,
+});
+const Contact = mongoose.model('Contact', contactSchema);
+contactSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  }
+})
 
 let persons = data.persons;
 
@@ -38,7 +56,9 @@ app.get("/api", (req, res) => {
 });
 
 app.get("/api/persons", (req, res) => {
-  res.send(persons);
+    Contact.find({}).then(contacts => {
+    res.json(contacts);
+  })
 });
 
 app.get("/api/persons/:id", (req, res) => {
