@@ -43,10 +43,14 @@ app.get("/api/persons/:id", (req, res) => {
   const id = req.params.id;
 
   Contact.findById(id).then(contact => {
-    res.json(contact)
+    if (contact) {
+      res.json(contact)
+    } else {
+      res.status(404).end();
+    }
   }).catch(error => {
     console.error(error);
-    res.status(404).end();
+    res.status(500).end();
   })
 });
 
