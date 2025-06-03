@@ -78,21 +78,26 @@ app.post("/api/persons", (req, res) => {
     });
   }
 
-  if (persons.some((person) => person.name === body.name)) {
-    return res.status(400).json({
-      error: "name must be unique",
-    });
-  }
-
-  const id = String(Math.round(Math.random() * 1000));
-  const person = {
-    id: id,
+  const contact = new Contact({
     name: body.name,
     number: body.number,
-  };
-  persons = [...persons, person];
+  });
 
-  res.json(person);
+  contact.save().then(result => {
+    console.log('contact saved');
+    res.json(result);
+  }).catch(error => {
+    console.error(error);
+    res.status(400);
+  })
+
+  // if (persons.some((person) => person.name === body.name)) {
+  //   return res.status(400).json({
+  //     error: "name must be unique",
+  //   });
+  // }
+
+  // res.json(person);
 });
 
 app.get("/info", (req, res) => {
