@@ -1,14 +1,13 @@
-import "dotenv/config";
+import mongoose from "mongoose";
 import express from "express";
 import morgan from "morgan";
 import { apiList, info } from "./pages/index.js";
 import { Contact } from "./models/contact.js";
-import mongoose from "mongoose";
+import { errorHandler, unknownEndpoint } from "./utils/middleware.js";
 
-const port = process.env.PORT;
-export const app = express();
+const app = express();
 
-morgan.token("content", function (req, res) {
+morgan.token("content", function (req) {
   return JSON.stringify(req.body);
 });
 
@@ -26,7 +25,7 @@ app.use(
       "ms",
       tokens["content"](req, res),
     ].join(" ");
-  })
+  }),
 );
 
 app.get("/api", (req, res) => {
@@ -110,24 +109,7 @@ app.get("/info", (req, res) => {
   res.send(info);
 });
 
-const unknownEndpoint = (req, res) => {
-  res.status(404).send({ error: "unknown endpoint" });
-};
-
 app.use(unknownEndpoint);
-
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message);
-
-  if (error.name === "CastError") {
-    return response.status(400).send({ error: "malformatted id" });
-  }
-
-  next(error);
-};
-
 app.use(errorHandler);
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
-});
+export { app };

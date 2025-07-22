@@ -1,29 +1,31 @@
 import mongoose from "mongoose";
+import {} from "node";
 
-mongoose.set('strictQuery', false);
+mongoose.set("strictQuery", false);
 
 const url = process.env.MONGODB_URI;
-console.log('connecting to', url);
+console.log("connecting to", url);
 
-mongoose.connect(url)
-    .then(result => {
-        console.log('connected to MongoDB')
-    })
-    .catch(error => {
-        console.log('error connecting to MongoDB:', error)
-    })
+mongoose
+  .connect(url)
+  .then((result) => {
+    console.log("connected to MongoDB");
+  })
+  .catch((error) => {
+    console.log("error connecting to MongoDB:", error);
+  });
 
 const contactSchema = new mongoose.Schema({
-    name: String,
-    number: String,
+  name: String,
+  number: String,
 });
 
-contactSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
-        returnedObject.id = returnedObject._id.toString()
-        delete returnedObject._id
-        delete returnedObject.__v
-    }
+contactSchema.set("toJSON", {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  },
 });
 
-export const Contact = mongoose.model('Contact', contactSchema);
+export const Contact = mongoose.model("Contact", contactSchema);
