@@ -1,14 +1,18 @@
 import mongoose from "mongoose";
-import {} from "node";
 
 mongoose.set("strictQuery", false);
 
 const url = process.env.MONGODB_URI;
+
+if (!url) {
+  throw new Error("MONGODB_URI environment variable is not defined");
+};
+
 console.log("connecting to", url);
 
 mongoose
   .connect(url)
-  .then((result) => {
+  .then(() => {
     console.log("connected to MongoDB");
   })
   .catch((error) => {
@@ -21,7 +25,7 @@ const contactSchema = new mongoose.Schema({
 });
 
 contactSchema.set("toJSON", {
-  transform: (document, returnedObject) => {
+  transform: (_document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
