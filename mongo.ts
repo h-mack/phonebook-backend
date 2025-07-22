@@ -1,12 +1,6 @@
 import mongoose from "mongoose";
 
-const password = process.argv[2];
-const name = process.argv[3];
-const number = process.argv[4];
-
-const url = `mongodb+srv://fullstack:${password}@cluster0.bkygwix.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=Cluster0`;
-
-if ((process.argv.length < 3) | (process.argv.length > 5)) {
+if ((process.argv.length < 3) || (process.argv.length > 5)) {
   console.log(`Please provide either:
         (a) just your password to view the list of saved contacts
         (b) your password, contact name and contact number of the contact you wish to save`);
@@ -18,8 +12,13 @@ if (process.argv.length === 4) {
   process.exit(1);
 }
 
-mongoose.set("strictQuery", false);
+const password = process.argv[2];
+const name = process.argv[3];
+const number = process.argv[4];
 
+const url = `mongodb+srv://fullstack:${password}@cluster0.bkygwix.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=Cluster0`;
+
+mongoose.set("strictQuery", false);
 mongoose.connect(url);
 
 const contactSchema = new mongoose.Schema({
@@ -50,7 +49,7 @@ if (process.argv.length === 3) {
 if (process.argv.length === 5) {
   contact
     .save()
-    .then((result) => {
+    .then(() => {
       console.log("Contact saved!");
     })
     .catch((error) => {
