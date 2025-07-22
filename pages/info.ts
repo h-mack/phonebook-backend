@@ -1,7 +1,7 @@
 import data from "../models/data.js";
-let persons = data.persons;
 
-let currentDate = new Date();
+const persons = data.persons;
+const currentDate = new Date();
 
 export const info = `
 <div>
