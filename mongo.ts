@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-if ((process.argv.length < 3) || (process.argv.length > 5)) {
+if (process.argv.length < 3 || process.argv.length > 5) {
   console.log(`Please provide either:
         (a) just your password to view the list of saved contacts
         (b) your password, contact name and contact number of the contact you wish to save`);

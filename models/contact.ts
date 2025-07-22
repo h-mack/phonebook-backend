@@ -6,7 +6,7 @@ const url = process.env.MONGODB_URI;
 
 if (!url) {
   throw new Error("MONGODB_URI environment variable is not defined");
-};
+}
 
 console.log("connecting to", url);
 
