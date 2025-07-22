@@ -15,5 +15,8 @@ export default tseslint.config(
         },
     },
   },
+  {
+    ignores: ['dist/**'],
+  },
   prettierConfig,
 );
