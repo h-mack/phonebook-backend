@@ -1,4 +1,4 @@
-import data from "../data.js";
+import data from "../models/data.js";
 let persons = data.persons;
 
 let currentDate = new Date();
