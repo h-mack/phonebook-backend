@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
 import express from "express";
+import mongoose from "mongoose";
 import morgan from "morgan";
 import { apiList, info } from "./pages/index.js";
 import { Contact } from "./models/contact.js";
@@ -28,11 +28,11 @@ app.use(
   }),
 );
 
-app.get("/api", (req, res) => {
+app.get("/api", (_req, res) => {
   res.send(apiList);
 });
 
-app.get("/api/persons", (req, res) => {
+app.get("/api/persons", (_req, res) => {
   Contact.find({}).then((contacts) => {
     res.json(contacts);
   });
@@ -105,7 +105,7 @@ app.post("/api/persons", (req, res) => {
   // res.json(person);
 });
 
-app.get("/info", (req, res) => {
+app.get("/info", (_req, res) => {
   res.send(info);
 });
 
