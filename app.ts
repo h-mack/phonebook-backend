@@ -8,7 +8,7 @@ import { errorHandler, unknownEndpoint } from "./utils/middleware.js";
 const app = express();
 
 morgan.token("content", function (req) {
-  return JSON.stringify(req.body);
+  return JSON.stringify((req as express.Request).body);
 });
 
 app.use(express.static("dist"));
