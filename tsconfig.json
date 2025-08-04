@@ -10,7 +10,8 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "sourceMap": true
   },
   "include": ["**/*"],
   "exclude": ["node_modules", "dist"]
