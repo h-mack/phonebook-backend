@@ -1,9 +1,9 @@
 import express from "express";
 import mongoose from "mongoose";
 import morgan from "morgan";
-import { apiList, info } from "./pages/index.js";
-import { Contact } from "./models/contact.js";
-import { errorHandler, unknownEndpoint } from "./utils/middleware.js";
+import { apiList, info } from "./pages/index";
+import { Contact } from "./models/contact";
+import { errorHandler, unknownEndpoint } from "./utils/middleware";
 
 const app = express();
 
