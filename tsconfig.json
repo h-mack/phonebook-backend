@@ -11,7 +11,9 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "module": "commonjs",
-    "sourceMap": true
+    "sourceMap": true,
+    "outDir": "dist",
+    "rootDir": "."
   },
   "include": ["**/*"],
   "exclude": ["node_modules", "dist"]
