@@ -7,7 +7,7 @@ const average = (array: number[]) => {
     return sum + item;
   };
 
-  return array.reduce(reducer, 0) / array.length;
+  return array.length === 0 ? 0 : array.reduce(reducer, 0) / array.length;
 };
 
 export { reverse, average };
