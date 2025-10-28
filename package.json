@@ -16,7 +16,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write .",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test",
     "test:watch": "tsc --noEmit -p tsconfig.json --watch",
     "test:debug": "node --inspect-brk --require ts-node/register ./index.ts",
     "debug": "node --inspect-brk --require ts-node/register ./index.ts",
