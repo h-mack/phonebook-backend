@@ -30,7 +30,7 @@ contactsRouter.post("/", async (request, response, next) => {
     const { name, number } = request.body;
     const contact = new Contact({ name, number });
     const savedContact = await contact.save();
-    response.json(savedContact);
+    response.status(201).json(savedContact);
   } catch (error) {
     next(error);
   }

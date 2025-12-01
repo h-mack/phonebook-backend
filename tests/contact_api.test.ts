@@ -44,6 +44,28 @@ test("a specific contact is within the returned notes", async () => {
   strictEqual(contactNames.includes("John Doe"), true);
 });
 
+test("a valid contact can be added", async () => {
+  const newContact = {
+    name: "Spider Man",
+    number: "(407) 224-1783",
+  };
+
+  await api
+    .post("/api/persons")
+    .send(newContact)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  const response = await api.get("/api/persons");
+  const contacts = response.body.map((e: typeof Contact) => e);
+  strictEqual(response.body.length, initialContacts.length + 1);
+  console.log(contacts);
+  strictEqual(
+    contacts.some((contact: typeof Contact) => contact.name === "Spider Man"),
+    true,
+  );
+});
+
 after(async () => {
   await mongoose.connection.close();
 });
