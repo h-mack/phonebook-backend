@@ -28,7 +28,19 @@ contactsRouter.get("/:id", async (request, response, next) => {
 contactsRouter.post("/", async (request, response, next) => {
   try {
     const { name, number } = request.body;
-    const contact = new Contact({ name, number });
+
+    const errors: string[] = [];
+    if (!name || typeof name !== "string" || name.trim() === "") {
+      errors.push("name is required");
+    }
+    if (!number || typeof number !== "string" || number.trim() === "") {
+      errors.push("number is required");
+    }
+    if (errors.length > 0) {
+      return response.status(400).json({ error: errors.join(", ") });
+    }
+
+    const contact = new Contact({ name: name.trim(), number: number.trim() });
     const savedContact = await contact.save();
     response.status(201).json(savedContact);
   } catch (error) {

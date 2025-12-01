@@ -66,6 +66,17 @@ test("a valid contact can be added", async () => {
   );
 });
 
+test("contact without name is not added", async () => {
+  const newContact = {
+    number: "999-888-777",
+  };
+
+  await api.post("/api/persons").send(newContact).expect(400);
+
+  const response = await api.get("/api/persons");
+  strictEqual(response.body.length, initialContacts.length);
+});
+
 after(async () => {
   await mongoose.connection.close();
 });
