@@ -77,6 +77,17 @@ test("contact without name is not added", async () => {
   strictEqual(response.body.length, initialContacts.length);
 });
 
+test("contact without number is not added", async () => {
+  const newContact = {
+    name: "Mr No-number",
+  };
+
+  await api.post("/api/persons").send(newContact).expect(400);
+
+  const response = await api.get("/api/persons");
+  strictEqual(response.body.length, initialContacts.length);
+});
+
 after(async () => {
   await mongoose.connection.close();
 });
