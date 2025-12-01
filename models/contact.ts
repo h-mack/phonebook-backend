@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
+import { MONGODB_URI } from "../utils/config";
 
 mongoose.set("strictQuery", false);
 
-const url = process.env.MONGODB_URI;
+const url = MONGODB_URI;
 
 if (!url) {
   throw new Error("MONGODB_URI environment variable is not defined");

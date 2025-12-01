@@ -16,7 +16,8 @@ const password = process.argv[2];
 const name = process.argv[3];
 const number = process.argv[4];
 
-const url = `mongodb+srv://fullstack:${password}@cluster0.bkygwix.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=Cluster0`;
+// const url = `mongodb+srv://fullstack:${password}@cluster0.bkygwix.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=Cluster0`;
+const url = `mongodb+srv://fullstack:${password}@cluster0.yoankth.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=Cluster0`;
 
 mongoose.set("strictQuery", false);
 mongoose.connect(url);
