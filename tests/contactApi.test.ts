@@ -22,9 +22,10 @@ beforeEach(async () => {
   await Contact.deleteMany({});
   console.log("Contacts cleared");
 
-  const contactObjects = initialContacts.map((contact) => new Contact(contact));
-  const promiseArray = contactObjects.map((contact) => contact.save());
-  await Promise.all(promiseArray);
+  for (const contact of initialContacts) {
+    const contactObject = new Contact(contact);
+    await contactObject.save();
+  }
   console.log("Initial contacts added");
 });
 
