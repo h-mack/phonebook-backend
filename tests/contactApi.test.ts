@@ -20,13 +20,7 @@ const initialContacts = [
 
 beforeEach(async () => {
   await Contact.deleteMany({});
-  console.log("Contacts cleared");
-
-  for (const contact of initialContacts) {
-    const contactObject = new Contact(contact);
-    await contactObject.save();
-  }
-  console.log("Initial contacts added");
+  await Contact.insertMany(initialContacts);
 });
 
 test("contacts are returned as json", async () => {
