@@ -102,6 +102,20 @@ test("a specific contact can be viewed", async () => {
   deepStrictEqual(resultContact.body, expected);
 });
 
+test("a contact can be deleted", async () => {
+  const contactsAtStart = await Contact.find({}).lean();
+  const contactToDelete = contactsAtStart[0];
+
+  await api.delete(`/api/persons/${contactToDelete._id}`).expect(204);
+
+  const contactsAtEnd = await Contact.find({}).lean();
+
+  const contacts = contactsAtEnd.map((c) => c.name);
+  strictEqual(!contacts.includes(contactToDelete.name), true);
+
+  strictEqual(contactsAtEnd.length, initialContacts.length - 1);
+});
+
 after(async () => {
   await mongoose.connection.close();
 });
