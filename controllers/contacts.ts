@@ -37,7 +37,7 @@ contactsRouter.post("/", async (request, response, next) => {
       errors.push("number is required");
     }
     if (errors.length > 0) {
-      return response.status(400).json({ error: errors.join(", ") });
+      return response.status(400).json({ errors });
     }
 
     const contact = new Contact({ name: name.trim(), number: number.trim() });
@@ -60,17 +60,52 @@ contactsRouter.delete("/:id", async (request, response, next) => {
 contactsRouter.put("/:id", async (request, response, next) => {
   try {
     const { name, number } = request.body;
-    const contact = await Contact.findById(request.params.id);
 
+    if (!name && !number) {
+      return response
+        .status(400)
+        .json({ error: "either an updated name, number, or both is required" });
+    }
+
+    const contact = await Contact.findById(request.params.id);
     if (!contact) {
       return response.status(404).end();
     }
 
-    contact.name = name;
-    contact.number = number;
+    const errors: string[] = [];
+    if (name) {
+      if (typeof name !== "string") {
+        errors.push("name must be of type string");
+      } else {
+        if (name.trim() === "") {
+          errors.push("name must not be an empty value");
+        }
+        if (name === contact.name) {
+          errors.push("this contact already exists with that name value");
+        }
+      }
+    }
+    if (number) {
+      if (typeof number !== "string") {
+        errors.push("number must be of type string");
+      } else {
+        if (number.trim() === "") {
+          errors.push("number must not be an empty value");
+        }
+        if (number === contact.number) {
+          errors.push("this contact already exists with that number value");
+        }
+      }
+    }
+    if (errors.length > 0) {
+      return response.status(400).json({ error: errors.join(", ") });
+    }
+
+    if (name) contact.name = name;
+    if (number) contact.number = number;
 
     const updatedContact = await contact.save();
-    response.json(updatedContact);
+    response.status(200).json(updatedContact);
   } catch (error) {
     next(error);
   }
