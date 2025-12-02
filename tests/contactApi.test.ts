@@ -1,5 +1,10 @@
 import { test, after, beforeEach, describe } from "node:test";
-import { deepStrictEqual, strictEqual } from "node:assert";
+import {
+  deepStrictEqual,
+  notDeepStrictEqual,
+  // notStrictEqual,
+  strictEqual,
+} from "node:assert";
 import mongoose from "mongoose";
 import supertest from "supertest";
 import { app } from "../app";
@@ -136,6 +141,86 @@ describe("when there is initially some notes saved", () => {
       strictEqual(!contacts.includes(contactToDelete.name), true);
 
       strictEqual(contactsAtEnd.length, initialContacts.length - 1);
+    });
+  });
+
+  describe("updating a single contact", () => {
+    test("succeeds with status code 200 if id is valid and valid payload", async () => {
+      const contactsAtStart = await Contact.find({}).lean();
+      const contactToUpdate = contactsAtStart[0];
+
+      await api
+        .put(`/api/persons/${contactToUpdate._id}`)
+        .send({
+          name: "Placeholder name",
+          number: "555-555-5555",
+        })
+        .expect(200);
+
+      const updatedContact = await Contact.findById(contactToUpdate._id).lean();
+      notDeepStrictEqual(contactToUpdate, updatedContact);
+    });
+
+    test("fails with status code 404 if contact does not exist", async () => {
+      const contact = new Contact({ name: "Temp", number: "54321" });
+      await contact.save();
+      await contact.deleteOne();
+      await api
+        .put(`/api/persons/${contact._id}`)
+        .send({
+          name: "new name",
+          number: "555-555-5555",
+        })
+        .expect(404);
+    });
+
+    test("fails with status code 400 if id value is not valid", async () => {
+      const invalidId = "abcde12345";
+      await api.get(`/api/persons/${invalidId}`).expect(400);
+    });
+
+    test("fails with status code 400 if id type is not valid", async () => {
+      const invalidId = 12345;
+      await api.get(`/api/persons/${invalidId}`).expect(400);
+    });
+
+    test("fails with status code 400 if id is valid but name and number are missing", async () => {
+      const contactsAtStart = await Contact.find({}).lean();
+      const contactToUpdate = contactsAtStart[0];
+      await api.put(`/api/persons/${contactToUpdate._id}`).send({}).expect(400);
+    });
+
+    test("fails with status code 400 if id is valid but name is invalid type", async () => {
+      const contactsAtStart = await Contact.find({}).lean();
+      const contactToUpdate = contactsAtStart[0];
+      await api
+        .put(`/api/persons/${contactToUpdate._id}`)
+        .send({
+          name: 1234,
+        })
+        .expect(400);
+    });
+
+    test("fails with status code 400 if id is valid but name is empty string", async () => {
+      const contactsAtStart = await Contact.find({}).lean();
+      const contactToUpdate = contactsAtStart[0];
+      await api
+        .put(`/api/persons/${contactToUpdate._id}`)
+        .send({
+          name: "",
+        })
+        .expect(400);
+    });
+
+    test("fails with status code 400 if id is valid but name already exists with same value", async () => {
+      const contactsAtStart = await Contact.find({}).lean();
+      const contactToUpdate = contactsAtStart[0];
+      await api
+        .put(`/api/persons/${contactToUpdate._id}`)
+        .send({
+          name: "John Doe",
+        })
+        .expect(400);
     });
   });
 });
