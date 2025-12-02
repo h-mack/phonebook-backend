@@ -13,20 +13,21 @@ morgan.token("content", function (req) {
 
 app.use(express.static("dist"));
 app.use(express.json());
-app.use(
-  morgan((tokens, req, res) => {
-    return [
-      tokens.method(req, res),
-      tokens.url(req, res),
-      tokens.status(req, res),
-      tokens.res(req, res, "content-length"),
-      "-",
-      tokens["response-time"](req, res),
-      "ms",
-      tokens["content"](req, res),
-    ].join(" ");
-  }),
-);
+// # Enable to show API call console logging info
+// app.use(
+//   morgan((tokens, req, res) => {
+//     return [
+//       tokens.method(req, res),
+//       tokens.url(req, res),
+//       tokens.status(req, res),
+//       tokens.res(req, res, "content-length"),
+//       "-",
+//       tokens["response-time"](req, res),
+//       "ms",
+//       tokens["content"](req, res),
+//     ].join(" ");
+//   }),
+// );
 
 app.get("/api", (_req, res) => {
   res.send(apiList);
