@@ -1,5 +1,5 @@
 import { test, after, beforeEach } from "node:test";
-import { strictEqual } from "node:assert";
+import { deepStrictEqual, strictEqual } from "node:assert";
 import mongoose from "mongoose";
 import supertest from "supertest";
 import { app } from "../app";
@@ -59,7 +59,6 @@ test("a valid contact can be added", async () => {
   const response = await api.get("/api/persons");
   const contacts = response.body.map((e: typeof Contact) => e);
   strictEqual(response.body.length, initialContacts.length + 1);
-  console.log(contacts);
   strictEqual(
     contacts.some((contact: typeof Contact) => contact.name === "Spider Man"),
     true,
@@ -86,6 +85,21 @@ test("contact without number is not added", async () => {
 
   const response = await api.get("/api/persons");
   strictEqual(response.body.length, initialContacts.length);
+});
+
+test("a specific contact can be viewed", async () => {
+  const contacts = await Contact.find({}).lean();
+  const expected = {
+    ...contacts[0],
+    _id: contacts[0]._id.toString(),
+  };
+
+  const resultContact = await api
+    .get(`/api/persons/${contacts[0]._id}`)
+    .expect(200)
+    .expect("Content-Type", /application\/json/);
+
+  deepStrictEqual(resultContact.body, expected);
 });
 
 after(async () => {

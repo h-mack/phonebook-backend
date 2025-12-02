@@ -16,7 +16,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write .",
-    "test": "cross-env NODE_ENV=test tsx --test \"**/*.test.ts\"",
+    "test": "cross-env NODE_ENV=test tsx --test",
     "debug": "node --inspect-brk --require ts-node/register ./index.ts",
     "debug:watch": "tsc --noEmit -p tsconfig.json --watch && node --inspect-brk --require ts-node/register ./index.ts",
     "prepare": "husky install"
