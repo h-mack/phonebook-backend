@@ -20,10 +20,12 @@ const initialContacts = [
 
 beforeEach(async () => {
   await Contact.deleteMany({});
-  let contactObject = new Contact(initialContacts[0]);
-  await contactObject.save();
-  contactObject = new Contact(initialContacts[1]);
-  await contactObject.save();
+  console.log("Contacts cleared");
+
+  const contactObjects = initialContacts.map((contact) => new Contact(contact));
+  const promiseArray = contactObjects.map((contact) => contact.save());
+  await Promise.all(promiseArray);
+  console.log("Initial contacts added");
 });
 
 test("contacts are returned as json", async () => {
